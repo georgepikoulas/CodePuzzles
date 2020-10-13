@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CodeChallenges.SharedKernel.Common.Utilities
 {
     public class Helper
     {
-        public static List<int> ConvertStringValueToInt(string input)
+        public static int ConvertStringValueToInt(string input)
+        {
+            var sanitized = Regex.Replace(input, "[^0-9]+", string.Empty);
+           
+
+            return  int.Parse( sanitized);
+        }
+
+        public static List<int> ConvertStringValueToListInt(string input)
         {
 
             var selectedEditionIds = input.ToArray()
                 .Where(i => !char.IsWhiteSpace(i)
                             && char.IsDigit(i))
-                .Select(x => Convert.ToInt32(x)).ToList();
+                .Select(x => (int)Char.GetNumericValue(x)
+                //Convert.ToInt16(x)
+                ).ToList();
 
             return selectedEditionIds;
         }
